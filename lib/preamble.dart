@@ -9,8 +9,9 @@ var _NODE_PREAMBLE = r"""
       var cwd = process.cwd();
       if (process.platform != 'win32') return cwd;
       return '/' + cwd.replace('\\', '/');
-    }) + "/"
+    })() + "/"
   };
+  
   global.scheduleImmediate = setImmediate;
   global.self = global;
   global.require = require;
