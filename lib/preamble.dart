@@ -5,6 +5,7 @@ var _NODE_PREAMBLE = r"""
   global.scheduleImmediate = setImmediate;
   global.self = global;
   global.require = require;
+  global.export = export;
   global.process = process;
   
   function computeCurrentScript() {
