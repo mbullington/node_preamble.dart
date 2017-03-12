@@ -14,6 +14,8 @@ main() async {
   new File("$lib/preamble.min.js").writeAsStringSync(response.body);
 
   new File("$lib/preamble.dart").writeAsStringSync("""
+library node_preamble;
+
 final _minified = r\"""${response.body}\""";
 
 final _normal = r\"""
