@@ -1,3 +1,8 @@
+## 1.3.0
+
+* Add minified versions of the preamble accessible as `lib/preamble.min.js` and
+  by calling `getPreamble(minified: true)`.
+
 ## 1.2.0
 
 * Prevent encapsulation, `global.self = global` (old) vs.
