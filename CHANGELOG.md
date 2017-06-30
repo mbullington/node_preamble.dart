@@ -1,3 +1,8 @@
+## 1.4.0
+
+* Add __dirname and __filename to exposed globals. Adds ability of exposing more
+  globals in the preamble by calling `getPreamble(additionalGlobals: ["__dirname", ...])`.
+
 ## 1.3.0
 
 * Add minified versions of the preamble accessible as `lib/preamble.min.js` and

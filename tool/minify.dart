@@ -25,7 +25,9 @@ $preamble\""";
 ///
 /// If [minified] is true, returns the minified version rather than the
 /// human-readable version.
-String getPreamble({bool minified: false}) =>
-    minified ? _minified : _normal;
+String getPreamble({bool minified: false, List<String> additionalGlobals: const []}) =>
+    (minified ? _minified : _normal) +
+    (additionalGlobals == null ? "" :
+        additionalGlobals.map((global) => "self.\$global=\$global;").join());
 """);
 }
