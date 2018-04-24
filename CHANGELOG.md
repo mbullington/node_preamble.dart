@@ -1,3 +1,8 @@
+## 1.4.1
+
+* Fix a bug where the URL for the current working directory could contain
+  backslashes on Windows.
+
 ## 1.4.0
 
 * Add __dirname and __filename to exposed globals. Adds ability of exposing more
