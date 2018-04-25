@@ -1,3 +1,7 @@
+## 1.4.1
+
+* Make sure to replace all backslashes for cwd on Windows, not just the first.
+
 ## 1.4.0
 
 * Add __dirname and __filename to exposed globals. Adds ability of exposing more
