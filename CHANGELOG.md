@@ -1,3 +1,7 @@
+## 1.4.2
+
+* Keep `Uri.base` up to date when the current working directory changes.
+
 ## 1.4.1
 
 * Make sure to replace all backslashes for cwd on Windows, not just the first.
