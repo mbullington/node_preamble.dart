@@ -1,6 +1,7 @@
 ## 1.4.2
 
 * Keep `Uri.base` up to date when the current working directory changes.
+* Add .dart_tool to gitignore. 
 
 ## 1.4.1
 
