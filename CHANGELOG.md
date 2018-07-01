@@ -1,3 +1,8 @@
+## 1.4.3
+
+* Add Node detector for Browserify/Webpack-type environments. (thanks to @lexaknyazev for reporting!)
+* Add examples for pub (thanks @bcko!)
+
 ## 1.4.2
 
 * Keep `Uri.base` up to date when the current working directory changes.
