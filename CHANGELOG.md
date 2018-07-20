@@ -1,3 +1,7 @@
+## 1.4.4
+
+* Explicitly support Dart 2 stable releases.
+
 ## 1.4.3
 
 * Add Node detector for Browserify/Webpack-type environments. (thanks to @lexaknyazev for reporting!)
