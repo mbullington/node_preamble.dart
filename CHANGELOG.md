@@ -1,3 +1,10 @@
+## 1.4.5
+
+Fixes for Angular 6+ applications using compiled Dart package w/ preamble:
+
+* Checks for global if it's not polyfilled, then try for window.
+* Don't assume that since we have CommonJS we have process, __dirname, __filename.
+
 ## 1.4.4
 
 * Explicitly support Dart 2 stable releases.
