@@ -1,15 +1,22 @@
 library node_preamble;
 
-final _minified = r"""var self=Object.create("undefined"!=typeof global?global:window);self.scheduleImmediate=self.setImmediate?function(e){global.setImmediate(e)}:function(e){setTimeout(e,0)},self.require=require,self.exports=exports,"undefined"!=typeof process&&(self.process=process),"undefined"!=typeof __dirname&&(self.__dirname=__dirname),"undefined"!=typeof __filename&&(self.__filename=__filename),global.window||(self.location={get href(){return"file://"+(e=process.cwd(),"win32"!=process.platform?e:"/"+e.replace(/\\/g,"/"))+"/";var e}},function(){function e(){try{throw new Error}catch(t){var e=t.stack,r=new RegExp("^ *at [^(]*\\((.*):[0-9]*:[0-9]*\\)$","mg"),n=null;do{var l=r.exec(e);null!=l&&(n=l)}while(null!=l);return n[1]}}var r=null;self.document={get currentScript(){return null==r&&(r={src:e()}),r}}}(),self.dartDeferredLibraryLoader=function(e,r,n){try{load(e),r()}catch(e){n(e)}});""";
+final _minified = r"""var dartNodePreambleHasGlobal="undefined"!=typeof global,dartNodePreambleSelf=dartNodePreambleHasGlobal?global:window,self=Object.create(dartNodePreambleSelf);self.scheduleImmediate=self.setImmediate?function(e){dartNodePreambleSelf.setImmediate(e)}:function(e){setTimeout(e,0)},self.require=require,self.exports=exports;var dartNodePreambleHasProcess="undefined"!=typeof process;dartNodePreambleHasProcess&&(self.process=process);var dartNodePreambleHasDirname="undefined"!=typeof __dirname;dartNodePreambleHasDirname&&(self.__dirname=__dirname);var dartNodePreambleHasFilename="undefined"!=typeof __filename;dartNodePreambleHasFilename&&(self.__filename=__filename),dartNodePreambleSelf.window||(self.location={get href(){return"file://"+(e=process.cwd(),"win32"!=process.platform?e:"/"+e.replace(/\\/g,"/"))+"/";var e}},function(){function e(){try{throw new Error}catch(t){var e=t.stack,r=new RegExp("^ *at [^(]*\\((.*):[0-9]*:[0-9]*\\)$","mg"),a=null;do{var l=r.exec(e);null!=l&&(a=l)}while(null!=l);return a[1]}}var r=null;self.document={get currentScript(){return null==r&&(r={src:e()}),r}}}(),self.dartDeferredLibraryLoader=function(e,r,a){try{load(e),r()}catch(e){a(e)}});""";
 
 final _normal = r"""
 // make sure to keep this as 'var'
 // we don't want block scoping
-var self = Object.create(typeof global !== "undefined" ? global : window);
+
+// Making typeof its own variable prevents Angular or Webpack
+// from 'breaking guard' and ruining our check.
+// https://github.com/medialize/sass.js/commit/6241c10dbe35b181ad78ecbd692fed5f86213ffb
+var dartNodePreambleHasGlobal = typeof global !== "undefined";
+var dartNodePreambleSelf = dartNodePreambleHasGlobal ? global : window;
+
+var self = Object.create(dartNodePreambleSelf);
 
 self.scheduleImmediate = self.setImmediate
     ? function (cb) {
-        global.setImmediate(cb);
+        dartNodePreambleSelf.setImmediate(cb);
       }
     : function(cb) {
         setTimeout(cb, 0);
@@ -21,21 +28,24 @@ self.exports = exports;
 
 // Node.js specific exports, check to see if they exist & or polyfilled
 
-if (typeof process !== "undefined") {
+var dartNodePreambleHasProcess = typeof process !== "undefined";
+if (dartNodePreambleHasProcess) {
   self.process = process;
 }
 
-if (typeof __dirname !== "undefined") {
+var dartNodePreambleHasDirname = typeof __dirname !== "undefined";
+if (dartNodePreambleHasDirname) {
   self.__dirname = __dirname;
 }
 
-if (typeof __filename !== "undefined") {
+var dartNodePreambleHasFilename = typeof __filename !== "undefined";
+if (dartNodePreambleHasFilename) {
   self.__filename = __filename;
 }
 
 // if we're running in a browser, Dart supports most of this out of box
 // make sure we only run these in Node.js environment
-if (!global.window) {
+if (!dartNodePreambleSelf.window) {
   // TODO: This isn't really a correct transformation. For example, it will fail
   // for paths that contain characters that need to be escaped in URLs. Once
   // dart-lang/sdk#27979 is fixed, it should be possible to make it better.
