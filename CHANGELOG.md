@@ -1,3 +1,10 @@
+## 1.4.5
+
+* Improve `location.href` so that Dart's `Uri.current` works for more paths.
+
+* Make `location.href` a getter so Dart's `Uri.current` changes along with the
+  process's working directory.
+
 ## 1.4.4
 
 * Explicitly support Dart 2 stable releases.

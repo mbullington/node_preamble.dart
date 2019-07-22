@@ -1,8 +1,9 @@
 library node_preamble;
 
-final _minified = r"""var self=Object.create(global);self.scheduleImmediate=self.setImmediate?function(e){global.setImmediate(e)}:function(e){setTimeout(e,0)},self.require=require,self.exports=exports,self.process=process,self.__dirname=__dirname,self.__filename=__filename,global.window||(self.location={get href(){return"file://"+(e=process.cwd(),"win32"!=process.platform?e:"/"+e.replace(/\\/g,"/"))+"/";var e}},function(){var e=null;self.document={get currentScript(){return null==e&&(e={src:function(){try{throw new Error}catch(n){var e=n.stack,r=new RegExp("^ *at [^(]*\\((.*):[0-9]*:[0-9]*\\)$","mg"),l=null;do{var t=r.exec(e);null!=t&&(l=t)}while(null!=t);return l[1]}}()}),e}}}(),self.dartDeferredLibraryLoader=function(e,r,l){try{load(e),r()}catch(e){l(e)}});""";
+final _minified = r"""var url=require("url"),self=Object.create(global);self.scheduleImmediate=self.setImmediate?function(e){global.setImmediate(e)}:function(e){setTimeout(e,0)},self.require=require,self.exports=exports,self.process=process,self.__dirname=__dirname,self.__filename=__filename,global.window||(self.location={get href(){return url.pathToFileURL(process.cwd()).href+"/"}},function(){function e(){try{throw new Error}catch(n){var e=n.stack,r=new RegExp("^ *at [^(]*\\((.*):[0-9]*:[0-9]*\\)$","mg"),l=null;do{var t=r.exec(e);null!=t&&(l=t)}while(null!=t);return l[1]}}var r=null;self.document={get currentScript(){return null==r&&(r={src:e()}),r}}}(),self.dartDeferredLibraryLoader=function(e,r,l){try{load(e),r()}catch(e){l(e)}});""";
 
 final _normal = r"""
+var url = require("url");
 // make sure to keep this as 'var'
 // we don't want block scoping
 var self = Object.create(global);
@@ -30,11 +31,7 @@ if (!global.window) {
   // dart-lang/sdk#27979 is fixed, it should be possible to make it better.
   self.location = {
     get href() {
-      return "file://" + (function() {
-        var cwd = process.cwd();
-        if (process.platform != "win32") return cwd;
-        return "/" + cwd.replace(/\\/g, "/");
-      })() + "/";
+      return url.pathToFileURL(process.cwd()).href + "/";
     }
   };
 
