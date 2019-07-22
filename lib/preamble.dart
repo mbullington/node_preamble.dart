@@ -1,31 +1,45 @@
 library node_preamble;
 
-final _minified = r"""var url=require("url"),self=Object.create(global);self.scheduleImmediate=self.setImmediate?function(e){global.setImmediate(e)}:function(e){setTimeout(e,0)},self.require=require,self.exports=exports,self.process=process,self.__dirname=__dirname,self.__filename=__filename,global.window||(self.location={get href(){return url.pathToFileURL(process.cwd()).href+"/"}},function(){function e(){try{throw new Error}catch(n){var e=n.stack,r=new RegExp("^ *at [^(]*\\((.*):[0-9]*:[0-9]*\\)$","mg"),l=null;do{var t=r.exec(e);null!=t&&(l=t)}while(null!=t);return l[1]}}var r=null;self.document={get currentScript(){return null==r&&(r={src:e()}),r}}}(),self.dartDeferredLibraryLoader=function(e,r,l){try{load(e),r()}catch(e){l(e)}});""";
+final _minified = r"""var url=require("url"),dartNodePreambleSelf="undefined"!=typeof global?global:window,self=Object.create(dartNodePreambleSelf);self.scheduleImmediate=self.setImmediate?function(e){dartNodePreambleSelf.setImmediate(e)}:function(e){setTimeout(e,0)},self.require=require,self.exports=exports,"undefined"!=typeof process&&(self.process=process),"undefined"!=typeof __dirname&&(self.__dirname=__dirname),"undefined"!=typeof __filename&&(self.__filename=__filename),dartNodePreambleSelf.window||(self.location={get href(){return url.pathToFileURL(process.cwd()).href+"/"}},function(){function e(){try{throw new Error}catch(n){var e=n.stack,r=new RegExp("^ *at [^(]*\\((.*):[0-9]*:[0-9]*\\)$","mg"),l=null;do{var t=r.exec(e);null!=t&&(l=t)}while(null!=t);return l[1]}}var r=null;self.document={get currentScript(){return null==r&&(r={src:e()}),r}}}(),self.dartDeferredLibraryLoader=function(e,r,l){try{load(e),r()}catch(e){l(e)}});""";
 
 final _normal = r"""
-var url = require("url");
 // make sure to keep this as 'var'
 // we don't want block scoping
-var self = Object.create(global);
+
+var url = require("url");
+var dartNodePreambleSelf = typeof global !== "undefined" ? global : window;
+
+var self = Object.create(dartNodePreambleSelf);
 
 self.scheduleImmediate = self.setImmediate
     ? function (cb) {
-        global.setImmediate(cb);
+        dartNodePreambleSelf.setImmediate(cb);
       }
     : function(cb) {
         setTimeout(cb, 0);
       };
 
+// CommonJS globals.
 self.require = require;
 self.exports = exports;
-self.process = process;
 
-self.__dirname = __dirname;
-self.__filename = __filename;
+// Node.js specific exports, check to see if they exist & or polyfilled
+
+if (typeof process !== "undefined") {
+  self.process = process;
+}
+
+if (typeof __dirname !== "undefined") {
+  self.__dirname = __dirname;
+}
+
+if (typeof __filename !== "undefined") {
+  self.__filename = __filename;
+}
 
 // if we're running in a browser, Dart supports most of this out of box
 // make sure we only run these in Node.js environment
-if (!global.window) {
+if (!dartNodePreambleSelf.window) {
   // TODO: This isn't really a correct transformation. For example, it will fail
   // for paths that contain characters that need to be escaped in URLs. Once
   // dart-lang/sdk#27979 is fixed, it should be possible to make it better.
