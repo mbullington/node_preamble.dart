@@ -1,6 +1,6 @@
 library node_preamble;
 
-final _minified = r"""var url=require("url"),dartNodePreambleSelf="undefined"!=typeof global?global:window,self=Object.create(dartNodePreambleSelf);self.scheduleImmediate=self.setImmediate?function(e){dartNodePreambleSelf.setImmediate(e)}:function(e){setTimeout(e,0)},self.require=require,self.exports=exports,"undefined"!=typeof process&&(self.process=process),"undefined"!=typeof __dirname&&(self.__dirname=__dirname),"undefined"!=typeof __filename&&(self.__filename=__filename),dartNodePreambleSelf.window||(self.location={get href(){return url.pathToFileURL(process.cwd()).href+"/"}},function(){function e(){try{throw new Error}catch(n){var e=n.stack,r=new RegExp("^ *at [^(]*\\((.*):[0-9]*:[0-9]*\\)$","mg"),l=null;do{var t=r.exec(e);null!=t&&(l=t)}while(null!=t);return l[1]}}var r=null;self.document={get currentScript(){return null==r&&(r={src:e()}),r}}}(),self.dartDeferredLibraryLoader=function(e,r,l){try{load(e),r()}catch(e){l(e)}});""";
+final _minified = r"""var url=require("url"),dartNodePreambleSelf="undefined"!=typeof global?global:window,self=Object.create(dartNodePreambleSelf);self.scheduleImmediate=self.setImmediate?function(e){dartNodePreambleSelf.setImmediate(e)}:function(e){setTimeout(e,0)},self.require=require,self.exports=exports,"undefined"!=typeof process&&(self.process=process),"undefined"!=typeof __dirname&&(self.__dirname=__dirname),"undefined"!=typeof __filename&&(self.__filename=__filename),dartNodePreambleSelf.window||(self.location={get href(){return url.pathToFileURL?url.pathToFileURL(process.cwd()).href+"/":"file://"+(e=process.cwd(),"win32"!=process.platform?e:"/"+e.replace(/\\/g,"/"))+"/";var e}},function(){function e(){try{throw new Error}catch(n){var e=n.stack,r=new RegExp("^ *at [^(]*\\((.*):[0-9]*:[0-9]*\\)$","mg"),l=null;do{var t=r.exec(e);null!=t&&(l=t)}while(null!=t);return l[1]}}var r=null;self.document={get currentScript(){return null==r&&(r={src:e()}),r}}}(),self.dartDeferredLibraryLoader=function(e,r,l){try{load(e),r()}catch(e){l(e)}});""";
 
 final _normal = r"""
 // make sure to keep this as 'var'
@@ -40,12 +40,21 @@ if (typeof __filename !== "undefined") {
 // if we're running in a browser, Dart supports most of this out of box
 // make sure we only run these in Node.js environment
 if (!dartNodePreambleSelf.window) {
-  // TODO: This isn't really a correct transformation. For example, it will fail
-  // for paths that contain characters that need to be escaped in URLs. Once
-  // dart-lang/sdk#27979 is fixed, it should be possible to make it better.
   self.location = {
     get href() {
-      return url.pathToFileURL(process.cwd()).href + "/";
+      if (url.pathToFileURL) {
+        return url.pathToFileURL(process.cwd()).href + "/";
+      } else {
+        // This isn't really a correct transformation, but it's the best we have
+        // for versions of Node <10.12.0 which introduced `url.pathToFileURL()`.
+        // For example, it will fail for paths that contain characters that need
+        // to be escaped in URLs.
+        return "file://" + (function() {
+          var cwd = process.cwd();
+          if (process.platform != "win32") return cwd;
+          return "/" + cwd.replace(/\\/g, "/");
+        })() + "/"
+      }
     }
   };
 
@@ -84,7 +93,8 @@ if (!dartNodePreambleSelf.window) {
       errorCallback(error);
     }
   };
-}""";
+}
+""";
 
 /// Returns the text of the preamble.
 ///
