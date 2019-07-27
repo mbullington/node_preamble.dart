@@ -1,3 +1,7 @@
+## 1.4.6
+
+* Make `location.href` compatible with Node versions earlier than 10.12.0 again.
+
 ## 1.4.5
 
 * Improve `location.href` so that Dart's `Uri.current` works for more paths.
