@@ -1,12 +1,11 @@
 library node_preamble;
 
-final _minified = r"""var url=require("url"),dartNodePreambleSelf="undefined"!=typeof global?global:window,self=Object.create(dartNodePreambleSelf);self.scheduleImmediate=self.setImmediate?function(e){dartNodePreambleSelf.setImmediate(e)}:function(e){setTimeout(e,0)},self.require=require,self.exports=exports,"undefined"!=typeof process&&(self.process=process),"undefined"!=typeof __dirname&&(self.__dirname=__dirname),"undefined"!=typeof __filename&&(self.__filename=__filename),dartNodePreambleSelf.window||(self.location={get href(){return url.pathToFileURL?url.pathToFileURL(process.cwd()).href+"/":"file://"+(e=process.cwd(),"win32"!=process.platform?e:"/"+e.replace(/\\/g,"/"))+"/";var e}},function(){function e(){try{throw new Error}catch(n){var e=n.stack,r=new RegExp("^ *at [^(]*\\((.*):[0-9]*:[0-9]*\\)$","mg"),l=null;do{var t=r.exec(e);null!=t&&(l=t)}while(null!=t);return l[1]}}var r=null;self.document={get currentScript(){return null==r&&(r={src:e()}),r}}}(),self.dartDeferredLibraryLoader=function(e,r,l){try{load(e),r()}catch(e){l(e)}});""";
+final _minified = r"""var dartNodePreambleSelf="undefined"!=typeof global?global:window,self=Object.create(dartNodePreambleSelf);if(self.scheduleImmediate=self.setImmediate?function(e){dartNodePreambleSelf.setImmediate(e)}:function(e){setTimeout(e,0)},self.require=require,self.exports=exports,"undefined"!=typeof process&&(self.process=process),"undefined"!=typeof __dirname&&(self.__dirname=__dirname),"undefined"!=typeof __filename&&(self.__filename=__filename),!dartNodePreambleSelf.window){var url="undefined"!=typeof __non_webpack_require__?__non_webpack_require__("url"):require("url");self.location={get href(){return url.pathToFileURL?url.pathToFileURL(process.cwd()).href+"/":"file://"+(e=process.cwd(),"win32"!=process.platform?e:"/"+e.replace(/\\/g,"/"))+"/";var e}},function(){function e(){try{throw new Error}catch(t){var e=t.stack,r=new RegExp("^ *at [^(]*\\((.*):[0-9]*:[0-9]*\\)$","mg"),l=null;do{var n=r.exec(e);null!=n&&(l=n)}while(null!=n);return l[1]}}var r=null;self.document={get currentScript(){return null==r&&(r={src:e()}),r}}}(),self.dartDeferredLibraryLoader=function(e,r,l){try{load(e),r()}catch(e){l(e)}}}""";
 
 final _normal = r"""
 // make sure to keep this as 'var'
 // we don't want block scoping
 
-var url = require("url");
 var dartNodePreambleSelf = typeof global !== "undefined" ? global : window;
 
 var self = Object.create(dartNodePreambleSelf);
@@ -40,6 +39,12 @@ if (typeof __filename !== "undefined") {
 // if we're running in a browser, Dart supports most of this out of box
 // make sure we only run these in Node.js environment
 if (!dartNodePreambleSelf.window) {
+  // This line is to:
+  // 1) Prevent Webpack from bundling (the require(null == null ? 'url' : null) part)
+  // 2) In Webpack on Node.js, make sure we're using the native Node.js require, which is available via __non_webpack_require__
+  // https://github.com/mbullington/node_preamble.dart/issues/18#issuecomment-527305561
+  var url = "undefined" != typeof __non_webpack_require__ ? __non_webpack_require__('url') : require(null == null ? 'url' : null);
+
   self.location = {
     get href() {
       if (url.pathToFileURL) {
