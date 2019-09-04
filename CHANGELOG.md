@@ -1,3 +1,10 @@
+## 1.4.7
+
+Thanks! @lexaknyazev
+
+* Move `url` module import to Node.js-only block.
+* Fix for when we try to load `url` on Node.js but are also using Webpack.
+
 ## 1.4.6
 
 * Make `location.href` compatible with Node versions earlier than 10.12.0 again.
