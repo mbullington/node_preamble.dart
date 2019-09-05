@@ -22,3 +22,8 @@ main() {
 
 Credit goes to the Dart team for creating Dart, dart2js, and the original
 preamble which this is derived from.
+
+## Contributing
+
+The only file that we directly modify is `preamble.js`. After that, to reflect your changes in
+both `preamble.dart` and `preamble.min.js`, run `npm install && npm run minify`
