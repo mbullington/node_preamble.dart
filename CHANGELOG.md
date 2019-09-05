@@ -1,3 +1,7 @@
+## 1.4.8
+
+* Fixed previous build `1.4.7` when minified file is used.
+
 ## 1.4.7
 
 Thanks! @lexaknyazev
