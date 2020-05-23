@@ -1,6 +1,6 @@
 library node_preamble;
 
-final _minified = r"""var dartNodePreambleSelf="undefined"!=typeof global?global:window,self=Object.create(dartNodePreambleSelf);if(self.scheduleImmediate=self.setImmediate?function(e){dartNodePreambleSelf.setImmediate(e)}:function(e){setTimeout(e,0)},self.require=require,self.exports=exports,"undefined"!=typeof process)self.process=process;if("undefined"!=typeof __dirname)self.__dirname=__dirname;if("undefined"!=typeof __filename)self.__filename=__filename;if(!dartNodePreambleSelf.window){var url=("undefined"!=typeof __webpack_require__?__non_webpack_require__:require)("url");self.location={get href(){if(url.pathToFileURL)return url.pathToFileURL(process.cwd()).href+"/";else return"file://"+function(){var e=process.cwd();if("win32"!=process.platform)return e;else return"/"+e.replace(/\\/g,"/")}()+"/"}},function(){function e(){try{throw new Error}catch(t){var e=t.stack,r=new RegExp("^ *at [^(]*\\((.*):[0-9]*:[0-9]*\\)$","mg"),l=null;do{var n=r.exec(e);if(null!=n)l=n}while(null!=n);return l[1]}}var r=null;self.document={get currentScript(){if(null==r)r={src:e()};return r}}}(),self.dartDeferredLibraryLoader=function(e,r,l){try{load(e),r()}catch(e){l(e)}}}""";
+final _minified = r"""var dartNodePreambleSelf="undefined"!=typeof global?global:window,self=Object.create(dartNodePreambleSelf);if(self.scheduleImmediate=self.setImmediate?function(e){dartNodePreambleSelf.setImmediate(e)}:function(e){setTimeout(e,0)},self.require=require,self.exports=exports,"undefined"!=typeof process)self.process=process;if("undefined"!=typeof __dirname)self.__dirname=__dirname;if("undefined"!=typeof __filename)self.__filename=__filename;var dartNodeIsActuallyNode=!dartNodePreambleSelf.window;try{if("undefined"!=typeof WorkerGlobalScope&&dartNodePreambleSelf instanceof WorkerGlobalScope)dartNodeIsActuallyNode=!1;if(dartNodeIsActuallyNode&&dartNodePreambleSelf.process&&dartNodePreambleSelf.versions&&process.versions.hasOwnProperty("electron"))dartNodeIsActuallyNode=!1}catch(e){}if(dartNodeIsActuallyNode){var url=("undefined"!=typeof __webpack_require__?__non_webpack_require__:require)("url");self.location={get href(){if(url.pathToFileURL)return url.pathToFileURL(process.cwd()).href+"/";else return"file://"+function(){var e=process.cwd();if("win32"!=process.platform)return e;else return"/"+e.replace(/\\/g,"/")}()+"/"}},function(){function e(){try{throw new Error}catch(o){var e=o.stack,r=new RegExp("^ *at [^(]*\\((.*):[0-9]*:[0-9]*\\)$","mg"),l=null;do{var t=r.exec(e);if(null!=t)l=t}while(null!=t);return l[1]}}var r=null;self.document={get currentScript(){if(null==r)r={src:e()};return r}}}(),self.dartDeferredLibraryLoader=function(e,r,l){try{load(e),r()}catch(e){l(e)}}}""";
 
 final _normal = r"""
 // make sure to keep this as 'var'
@@ -38,7 +38,22 @@ if (typeof __filename !== "undefined") {
 
 // if we're running in a browser, Dart supports most of this out of box
 // make sure we only run these in Node.js environment
-if (!dartNodePreambleSelf.window) {
+
+var dartNodeIsActuallyNode = !dartNodePreambleSelf.window
+
+try {
+  // Check if we're in a Web Worker instead.
+  if (typeof WorkerGlobalScope !== 'undefined' && dartNodePreambleSelf instanceof WorkerGlobalScope) {
+    dartNodeIsActuallyNode = false;
+  }
+
+  // Check if we're in Electron.
+  if (dartNodeIsActuallyNode && dartNodePreambleSelf.process && dartNodePreambleSelf.versions && process.versions.hasOwnProperty('electron')) {
+    dartNodeIsActuallyNode = false;
+  }
+} catch(e) {}
+
+if (dartNodeIsActuallyNode) {
   // This line is to:
   // 1) Prevent Webpack from bundling.
   // 2) In Webpack on Node.js, make sure we're using the native Node.js require, which is available via __non_webpack_require__

@@ -1,3 +1,9 @@
+## 1.4.9
+
+* Change behavior of Node.js detection that now takes into account:
+  - Web workers in browser
+  - Electron 
+
 ## 1.4.8
 
 * Fixed previous build `1.4.7` when minified file is used.
