@@ -1,3 +1,7 @@
+# 1.4.10
+
+Oops, fix Electron capabilities to be correct. Sorry about this!
+
 ## 1.4.9
 
 * Change behavior of Node.js detection that now takes into account:
