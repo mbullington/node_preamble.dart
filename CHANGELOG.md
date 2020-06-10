@@ -1,10 +1,6 @@
-# 1.4.11
+# 1.4.10-1.4.12
 
 Hotfix again for Electron support, quite embarassing at this point. Verified using the awesome Electron Fiddle tool.
-
-# 1.4.10
-
-Oops, fix Electron capabilities to be correct. Sorry about this!
 
 ## 1.4.9
 
