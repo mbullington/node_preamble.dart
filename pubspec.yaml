@@ -1,11 +1,9 @@
 name: node_preamble
 author: Michael Bullington <mikebullingtn@gmail.com>
 homepage: https://github.com/mbullington/node_preamble.dart
-version: 1.4.12
+version: 1.4.13-nullsafety
 description: Better node.js preamble for dart2js, use it in your build system.
 
 environment:
-  sdk: '>=1.24.0 <3.0.0'
+  sdk: '>=2.12.0-0 <3.0.0'
 
-dev_dependencies:
-  http: '^0.11.0'
