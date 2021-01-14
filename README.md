@@ -27,3 +27,11 @@ preamble which this is derived from.
 
 The only file that we directly modify is `preamble.js`. After that, to reflect your changes in
 both `preamble.dart` and `preamble.min.js`, run `npm install && npm run minify`
+
+### Testing
+
+`node_preamble` tries to support the following platforms. Before a `pub` release, the following environments should be manually tested with a sample `dart2js` output:
+
+- `node`
+- Webpack (easy way is with `create-react-app`)
+- Electron Fiddle (w/ and w/o node integration)
