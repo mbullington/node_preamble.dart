@@ -1,3 +1,7 @@
+# 1.4.13-nullsafety.0
+
+* Supports running in null-safe mode.
+
 # 1.4.10-1.4.12
 
 Hotfix again for Electron support, quite embarassing at this point. Verified using the awesome Electron Fiddle tool.
@@ -6,7 +10,7 @@ Hotfix again for Electron support, quite embarassing at this point. Verified usi
 
 * Change behavior of Node.js detection that now takes into account:
   - Web workers in browser
-  - Electron 
+  - Electron
 
 ## 1.4.8
 
@@ -45,7 +49,7 @@ Thanks! @lexaknyazev
 ## 1.4.2
 
 * Keep `Uri.base` up to date when the current working directory changes.
-* Add .dart_tool to gitignore. 
+* Add .dart_tool to gitignore.
 
 ## 1.4.1
 
