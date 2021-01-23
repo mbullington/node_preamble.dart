@@ -1,3 +1,7 @@
+# 1.4.13
+
+* Fixes detection on Electron with `nodeIntegration` disabled
+
 # 1.4.10-1.4.12
 
 Hotfix again for Electron support, quite embarassing at this point. Verified using the awesome Electron Fiddle tool.
