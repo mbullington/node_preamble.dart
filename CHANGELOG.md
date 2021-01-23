@@ -1,10 +1,6 @@
-# 1.4.14
+# 1.4.13
 
 * Fixes detection on Electron with `nodeIntegration` disabled
-
-# 1.4.13-nullsafety
-
-* Support running in null-safety mode
 
 # 1.4.10-1.4.12
 
