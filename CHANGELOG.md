@@ -1,3 +1,7 @@
+# 2.0.0
+
+* Null safety release.
+
 # 1.4.13
 
 * Fixes detection on Electron with `nodeIntegration` disabled
