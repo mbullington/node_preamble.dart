@@ -126,5 +126,4 @@ if (dartNodeIsActuallyNode) {
 /// human-readable version.
 String getPreamble({bool minified: false, List<String> additionalGlobals: const []}) =>
     (minified ? _minified : _normal) +
-    (additionalGlobals == null ? "" :
-        additionalGlobals.map((global) => "self.$global=$global;").join());
+    (additionalGlobals.map((global) => "self.$global=$global;").join());
