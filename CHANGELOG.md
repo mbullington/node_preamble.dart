@@ -1,3 +1,7 @@
+# 2.0.1
+
+* Hotfixes for newer Electron support
+
 # 2.0.0
 
 * Null safety release.
