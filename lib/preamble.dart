@@ -1,6 +1,6 @@
 library node_preamble;
 
-final _minified = r"""var dartNodePreambleSelf="undefined"!=typeof global?global:window,self=Object.create(dartNodePreambleSelf);if(self.scheduleImmediate="undefined"!=typeof setImmediate?function(e){setImmediate(e)}:function(e){setTimeout(e,0)},self.require=require,self.exports=exports,"undefined"!=typeof process)self.process=process;if("undefined"!=typeof __dirname)self.__dirname=__dirname;if("undefined"!=typeof __filename)self.__filename=__filename;if("undefined"!=typeof Buffer)self.Buffer=Buffer;var dartNodeIsActuallyNode=!dartNodePreambleSelf.window;try{if("undefined"!=typeof WorkerGlobalScope&&dartNodePreambleSelf instanceof WorkerGlobalScope)dartNodeIsActuallyNode=!1;if("undefined"!=typeof process&&process.versions&&process.versions.hasOwnProperty("electron")&&process.versions.hasOwnProperty("node"))dartNodeIsActuallyNode=!0}catch(e){}if(dartNodeIsActuallyNode){var url=("undefined"!=typeof __webpack_require__?__non_webpack_require__:require)("url");self.location={get href(){if(url.pathToFileURL)return url.pathToFileURL(process.cwd()).href+"/";else return"file://"+function(){var e=process.cwd();if("win32"!=process.platform)return e;else return"/"+e.replace(/\\/g,"/")}()+"/"}},function(){function e(){try{throw new Error}catch(n){var e=n.stack,r=new RegExp("^ *at [^(]*\\((.*):[0-9]*:[0-9]*\\)$","mg"),o=null;do{var t=r.exec(e);if(null!=t)o=t}while(null!=t);return o[1]}}var r=null;self.document={get currentScript(){if(null==r)r={src:e()};return r}}}(),self.dartDeferredLibraryLoader=function(e,r,o){try{load(e),r()}catch(e){o(e)}}}""";
+final _minified = r"""var dartNodePreambleSelf="undefined"!=typeof global?global:window,self=Object.create(dartNodePreambleSelf);if(self.scheduleImmediate="undefined"!=typeof setImmediate?function(e){setImmediate(e)}:function(e){setTimeout(e,0)},self.require=require,self.exports=exports,"undefined"!=typeof process)self.process=process;if("undefined"!=typeof __dirname)self.__dirname=__dirname;if("undefined"!=typeof __filename)self.__filename=__filename;if("undefined"!=typeof Buffer)self.Buffer=Buffer;var dartNodeIsActuallyNode=!dartNodePreambleSelf.window;try{if("undefined"!=typeof WorkerGlobalScope&&dartNodePreambleSelf instanceof WorkerGlobalScope)dartNodeIsActuallyNode=!1;if("undefined"!=typeof process&&process.versions&&process.versions.hasOwnProperty("electron")&&process.versions.hasOwnProperty("node"))dartNodeIsActuallyNode=!0}catch(e){}if(dartNodeIsActuallyNode){var url=("undefined"!=typeof __webpack_require__?__non_webpack_require__:require)("url");Object.defineProperty(self,"location",{value:{get href(){if(url.pathToFileURL)return url.pathToFileURL(process.cwd()).href+"/";else return"file://"+function(){var e=process.cwd();if("win32"!=process.platform)return e;else return"/"+e.replace(/\\/g,"/")}()+"/"}}}),function(){function e(){try{throw new Error}catch(n){var e=n.stack,r=new RegExp("^ *at [^(]*\\((.*):[0-9]*:[0-9]*\\)$","mg"),o=null;do{var t=r.exec(e);if(null!=t)o=t}while(null!=t);return o[1]}}var r=null;Object.defineProperty(self,"document",{value:{get currentScript(){if(null==r)r={src:e()};return r}}})}(),self.dartDeferredLibraryLoader=function(e,r,o){try{load(e),r()}catch(e){o(e)}}}""";
 
 final _normal = r"""
 // make sure to keep this as 'var'
@@ -64,23 +64,27 @@ if (dartNodeIsActuallyNode) {
   // https://github.com/mbullington/node_preamble.dart/issues/18#issuecomment-527305561
   var url = ("undefined" !== typeof __webpack_require__ ? __non_webpack_require__ : require)("url");
 
-  self.location = {
-    get href() {
-      if (url.pathToFileURL) {
-        return url.pathToFileURL(process.cwd()).href + "/";
-      } else {
-        // This isn't really a correct transformation, but it's the best we have
-        // for versions of Node <10.12.0 which introduced `url.pathToFileURL()`.
-        // For example, it will fail for paths that contain characters that need
-        // to be escaped in URLs.
-        return "file://" + (function() {
-          var cwd = process.cwd();
-          if (process.platform != "win32") return cwd;
-          return "/" + cwd.replace(/\\/g, "/");
-        })() + "/"
+  // Setting `self.location=` in Electron throws a `TypeError`, so we define it
+  // as a property instead to be safe.
+  Object.defineProperty(self, "location", {
+    value: {
+      get href() {
+        if (url.pathToFileURL) {
+          return url.pathToFileURL(process.cwd()).href + "/";
+        } else {
+          // This isn't really a correct transformation, but it's the best we have
+          // for versions of Node <10.12.0 which introduced `url.pathToFileURL()`.
+          // For example, it will fail for paths that contain characters that need
+          // to be escaped in URLs.
+          return "file://" + (function() {
+            var cwd = process.cwd();
+            if (process.platform != "win32") return cwd;
+            return "/" + cwd.replace(/\\/g, "/");
+          })() + "/"
+        }
       }
     }
-  };
+  });
 
   (function() {
     function computeCurrentScript() {
@@ -98,15 +102,20 @@ if (dartNodeIsActuallyNode) {
       }
     }
 
+    // Setting `self.document=` isn't known to throw an error anywhere like
+    // `self.location=` does on Electron, but it's better to be future-proof
+    // just in case..
     var cachedCurrentScript = null;
-    self.document = {
-      get currentScript() {
-        if (cachedCurrentScript == null) {
-          cachedCurrentScript = {src: computeCurrentScript()};
+    Object.defineProperty(self, "document", {
+      value: {
+        get currentScript() {
+          if (cachedCurrentScript == null) {
+            cachedCurrentScript = {src: computeCurrentScript()};
+          }
+          return cachedCurrentScript;
         }
-        return cachedCurrentScript;
       }
-    };
+    });
   })();
 
   self.dartDeferredLibraryLoader = function(uri, successCallback, errorCallback) {

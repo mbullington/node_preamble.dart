@@ -1,3 +1,8 @@
+# 2.0.1
+
+* Define properties for `global.location` and `global.document` rather than
+  setting them. This avoids `TypeError`s on Electron.
+
 # 2.0.0
 
 * Null safety release.
