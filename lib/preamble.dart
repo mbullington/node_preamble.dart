@@ -64,7 +64,8 @@ if (dartNodeIsActuallyNode) {
   // https://github.com/mbullington/node_preamble.dart/issues/18#issuecomment-527305561
   var url = ("undefined" !== typeof __webpack_require__ ? __non_webpack_require__ : require)("url");
 
-  // We cannot simply define the value, as location has a setter... Wacky.
+  // Setting `self.location=` in Electron throws a `TypeError`, so we define it
+  // as a property instead to be safe.
   Object.defineProperty(self, "location", {
     value: {
       get href() {
@@ -101,6 +102,9 @@ if (dartNodeIsActuallyNode) {
       }
     }
 
+    // Setting `self.document=` isn't known to throw an error anywhere like
+    // `self.location=` does on Electron, but it's better to be future-proof
+    // just in case..
     var cachedCurrentScript = null;
     Object.defineProperty(self, "document", {
       value: {
