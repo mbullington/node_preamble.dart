@@ -1,14 +1,14 @@
 library node_preamble;
 
-final _minified = r"""var dartNodePreambleSelf="undefined"!=typeof global?global:window,self=Object.create(dartNodePreambleSelf);if(self.scheduleImmediate="undefined"!=typeof setImmediate?function(e){setImmediate(e)}:function(e){setTimeout(e,0)},self.require=require,self.exports=exports,"undefined"!=typeof process)self.process=process;if("undefined"!=typeof __dirname)self.__dirname=__dirname;if("undefined"!=typeof __filename)self.__filename=__filename;if("undefined"!=typeof Buffer)self.Buffer=Buffer;var dartNodeIsActuallyNode=!dartNodePreambleSelf.window;try{if("undefined"!=typeof WorkerGlobalScope&&dartNodePreambleSelf instanceof WorkerGlobalScope)dartNodeIsActuallyNode=!1;if("undefined"!=typeof process&&process.versions&&process.versions.hasOwnProperty("electron")&&process.versions.hasOwnProperty("node"))dartNodeIsActuallyNode=!0}catch(e){}if(dartNodeIsActuallyNode){var url=("undefined"!=typeof __webpack_require__?__non_webpack_require__:require)("url");Object.defineProperty(self,"location",{value:{get href(){if(url.pathToFileURL)return url.pathToFileURL(process.cwd()).href+"/";else return"file://"+function(){var e=process.cwd();if("win32"!=process.platform)return e;else return"/"+e.replace(/\\/g,"/")}()+"/"}}}),function(){function e(){try{throw new Error}catch(n){var e=n.stack,r=new RegExp("^ *at [^(]*\\((.*):[0-9]*:[0-9]*\\)$","mg"),o=null;do{var t=r.exec(e);if(null!=t)o=t}while(null!=t);return o[1]}}var r=null;Object.defineProperty(self,"document",{value:{get currentScript(){if(null==r)r={src:e()};return r}}})}(),self.dartDeferredLibraryLoader=function(e,r,o){try{load(e),r()}catch(e){o(e)}}}""";
+final _minified = r"""var dartNodePreambleSelf="undefined"!=typeof global?Object.create(global):window,self=dartNodePreambleSelf;if(self.scheduleImmediate="undefined"!=typeof setImmediate?function(e){setImmediate(e)}:function(e){setTimeout(e,0)},"undefined"!=typeof require)self.require=require;if("undefined"!=typeof exports)self.exports=exports;if("undefined"!=typeof process)self.process=process;if("undefined"!=typeof __dirname)self.__dirname=__dirname;if("undefined"!=typeof __filename)self.__filename=__filename;if("undefined"!=typeof Buffer)self.Buffer=Buffer;var dartNodeIsActuallyNode=!dartNodePreambleSelf.window;try{if("undefined"!=typeof WorkerGlobalScope&&dartNodePreambleSelf instanceof WorkerGlobalScope)dartNodeIsActuallyNode=!1;if("undefined"!=typeof process&&process.versions&&process.versions.hasOwnProperty("electron")&&process.versions.hasOwnProperty("node"))dartNodeIsActuallyNode=!0}catch(e){}if(dartNodeIsActuallyNode){var url=("undefined"!=typeof __webpack_require__?__non_webpack_require__:require)("url");Object.defineProperty(self,"location",{value:{get href(){if(url.pathToFileURL)return url.pathToFileURL(process.cwd()).href+"/";else return"file://"+function(){var e=process.cwd();if("win32"!=process.platform)return e;else return"/"+e.replace(/\\/g,"/")}()+"/"}}}),function(){function e(){try{throw new Error}catch(f){var e=f.stack,r=new RegExp("^ *at [^(]*\\((.*):[0-9]*:[0-9]*\\)$","mg"),o=null;do{var t=r.exec(e);if(null!=t)o=t}while(null!=t);return o[1]}}var r=null;Object.defineProperty(self,"document",{value:{get currentScript(){if(null==r)r={src:e()};return r}}})}(),self.dartDeferredLibraryLoader=function(e,r,o){try{load(e),r()}catch(e){o(e)}}}""";
 
 final _normal = r"""
 // make sure to keep this as 'var'
 // we don't want block scoping
 
-var dartNodePreambleSelf = typeof global !== "undefined" ? global : window;
+var dartNodePreambleSelf = typeof global !== "undefined" ? Object.create(global) : window;
 
-var self = Object.create(dartNodePreambleSelf);
+var self = dartNodePreambleSelf;
 
 self.scheduleImmediate = typeof setImmediate !== "undefined"
     ? function (cb) {
@@ -19,8 +19,12 @@ self.scheduleImmediate = typeof setImmediate !== "undefined"
       };
 
 // CommonJS globals.
-self.require = require;
-self.exports = exports;
+if (typeof require !== "undefined") {
+  self.require = require;
+}
+if (typeof exports !== "undefined") {
+  self.exports = exports;
+}
 
 // Node.js specific exports, check to see if they exist & or polyfilled
 
