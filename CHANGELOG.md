@@ -1,3 +1,7 @@
+# 2.0.2
+
+* Don't crash when running in browser environments.
+
 # 2.0.1
 
 * Define properties for `global.location` and `global.document` rather than
