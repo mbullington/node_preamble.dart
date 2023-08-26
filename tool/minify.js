@@ -25,18 +25,20 @@ if (error) {
 
 fs.writeFileSync(MIN_PATH, minified);
 
-fs.writeFileSync(DART_PATH, `library node_preamble;
+fs.writeFileSync(DART_PATH, `const _minified =
+    r\"""${minified}\""";
 
-final _minified = r\"""${minified}\""";
-
-final _normal = r\"""
+const _normal = r\"""
 ${preamble}\""";
 
 /// Returns the text of the preamble.
 ///
 /// If [minified] is true, returns the minified version rather than the
 /// human-readable version.
-String getPreamble({bool minified: false, List<String> additionalGlobals: const []}) =>
+String getPreamble({
+  bool minified = false,
+  List<String> additionalGlobals = const [],
+}) =>
     (minified ? _minified : _normal) +
     (additionalGlobals.map((global) => "self.\$global=\$global;").join());
 `);

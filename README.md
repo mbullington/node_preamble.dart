@@ -15,7 +15,7 @@ You can also get the preamble via Dart, like in the following example.
 ```
 import "package:node_preamble/preamble.dart" as preamble;
 
-main() {
+void main() {
   print(preamble.getPreamble());
 }
 ```

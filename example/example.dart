@@ -1,5 +1,5 @@
 import "package:node_preamble/preamble.dart" as preamble;
 
-main() {
+void main() {
   print(preamble.getPreamble());
 }

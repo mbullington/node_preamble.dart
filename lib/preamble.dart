@@ -1,8 +1,7 @@
-library node_preamble;
+const _minified =
+    r"""var dartNodeIsActuallyNode="undefined"!=typeof process&&(process.versions||{}).hasOwnProperty("node"),self=dartNodeIsActuallyNode?Object.create(globalThis):globalThis;if(self.scheduleImmediate="undefined"!=typeof setImmediate?function(e){setImmediate(e)}:function(e){setTimeout(e,0)},"undefined"!=typeof require)self.require=require;if("undefined"!=typeof exports)self.exports=exports;if("undefined"!=typeof process)self.process=process;if("undefined"!=typeof __dirname)self.__dirname=__dirname;if("undefined"!=typeof __filename)self.__filename=__filename;if("undefined"!=typeof Buffer)self.Buffer=Buffer;if(dartNodeIsActuallyNode){var url=("undefined"!=typeof __webpack_require__?__non_webpack_require__:require)("url");Object.defineProperty(self,"location",{value:{get href(){if(url.pathToFileURL)return url.pathToFileURL(process.cwd()).href+"/";else return"file://"+function(){var e=process.cwd();if("win32"!=process.platform)return e;else return"/"+e.replace(/\\/g,"/")}()+"/"}}}),function(){function e(){try{throw new Error}catch(n){var e=n.stack,r=new RegExp("^ *at [^(]*\\((.*):[0-9]*:[0-9]*\\)$","mg"),f=null;do{var t=r.exec(e);if(null!=t)f=t}while(null!=t);return f[1]}}var r=null;Object.defineProperty(self,"document",{value:{get currentScript(){if(null==r)r={src:e()};return r}}})}(),self.dartDeferredLibraryLoader=function(e,r,f){try{load(e),r()}catch(e){f(e)}}}""";
 
-final _minified = r"""var dartNodeIsActuallyNode="undefined"!=typeof process&&(process.versions||{}).hasOwnProperty("node"),self=dartNodeIsActuallyNode?Object.create(globalThis):globalThis;if(self.scheduleImmediate="undefined"!=typeof setImmediate?function(e){setImmediate(e)}:function(e){setTimeout(e,0)},"undefined"!=typeof require)self.require=require;if("undefined"!=typeof exports)self.exports=exports;if("undefined"!=typeof process)self.process=process;if("undefined"!=typeof __dirname)self.__dirname=__dirname;if("undefined"!=typeof __filename)self.__filename=__filename;if("undefined"!=typeof Buffer)self.Buffer=Buffer;if(dartNodeIsActuallyNode){var url=("undefined"!=typeof __webpack_require__?__non_webpack_require__:require)("url");Object.defineProperty(self,"location",{value:{get href(){if(url.pathToFileURL)return url.pathToFileURL(process.cwd()).href+"/";else return"file://"+function(){var e=process.cwd();if("win32"!=process.platform)return e;else return"/"+e.replace(/\\/g,"/")}()+"/"}}}),function(){function e(){try{throw new Error}catch(n){var e=n.stack,r=new RegExp("^ *at [^(]*\\((.*):[0-9]*:[0-9]*\\)$","mg"),f=null;do{var t=r.exec(e);if(null!=t)f=t}while(null!=t);return f[1]}}var r=null;Object.defineProperty(self,"document",{value:{get currentScript(){if(null==r)r={src:e()};return r}}})}(),self.dartDeferredLibraryLoader=function(e,r,f){try{load(e),r()}catch(e){f(e)}}}""";
-
-final _normal = r"""
+const _normal = r"""
 var dartNodeIsActuallyNode = typeof process !== "undefined" && (process.versions || {}).hasOwnProperty('node');
 
 // make sure to keep this as 'var'
@@ -122,6 +121,9 @@ if (dartNodeIsActuallyNode) {
 ///
 /// If [minified] is true, returns the minified version rather than the
 /// human-readable version.
-String getPreamble({bool minified: false, List<String> additionalGlobals: const []}) =>
+String getPreamble({
+  bool minified = false,
+  List<String> additionalGlobals = const [],
+}) =>
     (minified ? _minified : _normal) +
     (additionalGlobals.map((global) => "self.$global=$global;").join());
