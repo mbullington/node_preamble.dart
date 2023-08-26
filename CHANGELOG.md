@@ -1,3 +1,8 @@
+# 2.1.0-wip
+
+* Require Dart 2.19 or later and explicitly support Dart 3.
+* No longer explicitly name library as `node_preamble`.
+
 # 2.0.2
 
 * Don't crash when running in browser environments.
