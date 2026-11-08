@@ -1,3 +1,9 @@
+# 2.0.3
+
+* Fix `Random.secure()` on Node.js: give `self` its own `crypto`, the global
+  `crypto` getter throws `ERR_INVALID_THIS` when read through `self`
+  ([#14](https://github.com/mbullington/node_preamble.dart/issues/14)).
+
 # 2.0.2
 
 * Don't crash when running in browser environments.
